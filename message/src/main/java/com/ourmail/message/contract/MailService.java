@@ -1,7 +1,7 @@
 package com.ourmail.message.contract;
 
-import java.util.List;
-
 public interface MailService {
-    List<Mail> getMailListByFolderId();
+    long createMail(long fromUserId, String title, String content);
+    long sendMail(long fromUserId, long[] receivers, String title, String content);
+    Mail getMailById(long id);
 }
