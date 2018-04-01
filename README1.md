@@ -1,2 +1,0 @@
-# ourmail-message-service
-message
