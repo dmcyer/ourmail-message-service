@@ -38,7 +38,7 @@ public class MailServiceTest {
     @Test
     public void sendMail() {
         when(userService.getNameById(1)).thenReturn(TEST_USER_NAME);
-        long mailId = mailService.sendMail(23,1, new long[] {2,4,5},new long[]{3},new String[]{"1223"}, TEST_TITLE, TEST_CONTENT);
+        long mailId = mailService.sendMail(23,1, new long[] {2,4,5},new long[]{3,15},new String[]{"1223","123"}, TEST_TITLE, TEST_CONTENT);
         Mail mail = mailService.getMailById(mailId);
         assertEquals((long)mail.getBackToMailId(), 23L);
         assertEquals((long)mail.getGroupIds().get(0), 3L);

@@ -5,11 +5,11 @@ class Mail {
     var title = ""
     var content = ""
     var fromUserId = 0L
+    var backToMailId = 0L
     var receiverIds = mutableListOf<Long>()
     var groupIds = mutableListOf<Long>()
     var groupPaths = mutableListOf<String>()
-    var backToMailId = 0L
-
+    //需别人子程序或mock的变量
     var fromUserName = ""
     //var backToUserName = ""
 }

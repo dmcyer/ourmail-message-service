@@ -26,7 +26,6 @@ public class MailServiceImpl implements MailService {
     @Autowired
     private UserService userService;
 
-    //这里是用户函数的编写，材料是底层函数（更底层和刚设的）
     @Override
     public long createMail(long backToMailId,long fromUserId, String title, String content) {
         //初始化
@@ -36,7 +35,6 @@ public class MailServiceImpl implements MailService {
         mailDO.setContent(content);
         mailDO.setCreatetime(System.currentTimeMillis());
         mailDO.setBackToMailId(backToMailId);
-
         mailRepository.save(mailDO);
         return mailDO.getId();
     }
@@ -56,7 +54,6 @@ public class MailServiceImpl implements MailService {
             mailGroupReceiverDO.setGroupId(groupids[j]);
             mailGroupReceiverDO.setPath(grouppaths[j]);
             mailGroupReceiverRepository.save(mailGroupReceiverDO);
-            //System.out.println(groupids[j]);
         }
         return mailId;
     }
@@ -72,9 +69,7 @@ public class MailServiceImpl implements MailService {
         long fromUserId = mailDO.getFromUserId();
         mail.setFromUserId(fromUserId);
         mail.setFromUserName(userService.getNameById(fromUserId));
-
         mail.setBackToMailId(mailDO.getBackToMailId());
-
         Iterable<MailReceiverDO> mailReceiverDOS = mailReceiverRepository.findAllByMailId(id);
         Iterable<MailGroupReceiverDO> mailGroupReceiverDOS = mailGroupReceiverRepository.findAllByMailId(id);
         for (MailReceiverDO mailReceiverDO : mailReceiverDOS) {
