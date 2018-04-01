@@ -13,4 +13,9 @@ class MailDO {
     var createtime = 0L
     var title = ""
     var content = ""
+    var fromUserName = ""
+    var receiverIds = mutableListOf<Long>()
+    var groupIds = mutableListOf<Long>()
+    var groupPaths = mutableListOf<String>()
+    var backToMailId = 0L
 }
