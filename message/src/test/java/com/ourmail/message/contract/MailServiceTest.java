@@ -29,7 +29,8 @@ public class MailServiceTest {
 
     @Test
     public void createMail() {
-        long mailId = mailService.createMail(1, TEST_TITLE, TEST_CONTENT);
+        when(userService.getNameById(1)).thenReturn(TEST_USER_NAME);
+        long mailId = mailService.createMail(1,1, TEST_TITLE, TEST_CONTENT);
         Mail mail = mailService.getMailById(mailId);
         assertEquals(mail.getTitle(), TEST_TITLE);
         assertEquals(mail.getContent(), TEST_CONTENT);
@@ -37,16 +38,18 @@ public class MailServiceTest {
     @Test
     public void sendMail() {
         when(userService.getNameById(1)).thenReturn(TEST_USER_NAME);
-        long mailId = mailService.sendMail(1, new long[] {2,3,4},new long[]{3},new String[]{"123"}, TEST_TITLE, TEST_CONTENT);
+        long mailId = mailService.sendMail(23,1, new long[] {2,4,5},new long[]{3},new String[]{"1223"}, TEST_TITLE, TEST_CONTENT);
         Mail mail = mailService.getMailById(mailId);
+        assertEquals((long)mail.getBackToMailId(), 23L);
         assertEquals((long)mail.getGroupIds().get(0), 3L);
+        assertEquals(mail.getGroupPaths().get(0), "1223");
         assertEquals(mail.getTitle(), TEST_TITLE);
         assertEquals(mail.getContent(), TEST_CONTENT);
         assertEquals(mail.getFromUserId(), 1);
         assertEquals(mail.getFromUserName(), TEST_USER_NAME);
         assertEquals(mail.getReceiverIds().size(), 3);
         assertEquals((long)mail.getReceiverIds().get(0), 2L);
-        assertEquals((long)mail.getReceiverIds().get(1), 3L);
-        assertEquals((long)mail.getReceiverIds().get(2), 4L);
+        assertEquals((long)mail.getReceiverIds().get(1), 4L);
+        assertEquals((long)mail.getReceiverIds().get(2), 5L);
     }
 }

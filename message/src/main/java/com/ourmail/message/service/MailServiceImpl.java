@@ -10,7 +10,6 @@ import com.ourmail.message.repository.MailRepository;
 import com.ourmail.user.contract.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ourmail.message.util.tool1;
 import com.ourmail.message.repository.MailGroupReceiverRepository;
 
 import javax.transaction.Transactional;
@@ -29,20 +28,22 @@ public class MailServiceImpl implements MailService {
 
     //这里是用户函数的编写，材料是底层函数（更底层和刚设的）
     @Override
-    public long createMail(long fromUserId, String title, String content) {
+    public long createMail(long backToMailId,long fromUserId, String title, String content) {
         //初始化
         MailDO mailDO = new MailDO();
         mailDO.setFromUserId(fromUserId);
         mailDO.setTitle(title);
         mailDO.setContent(content);
         mailDO.setCreatetime(System.currentTimeMillis());
+        mailDO.setBackToMailId(backToMailId);
+
         mailRepository.save(mailDO);
         return mailDO.getId();
     }
 
     @Override
-    public long sendMail(long fromUserId, long[] receivers,long[] groupids,String[] grouppaths, String title, String content) {
-        long mailId = createMail(fromUserId, title, content);
+    public long sendMail(long backToMailId,long fromUserId, long[] receivers,long[] groupids,String[] grouppaths, String title, String content) {
+        long mailId = createMail(backToMailId,fromUserId, title, content);
         for (long receiverId : receivers) {
             MailReceiverDO mailReceiverDO = new MailReceiverDO();
             mailReceiverDO.setMailId(mailId);
@@ -71,15 +72,17 @@ public class MailServiceImpl implements MailService {
         long fromUserId = mailDO.getFromUserId();
         mail.setFromUserId(fromUserId);
         mail.setFromUserName(userService.getNameById(fromUserId));
+
+        mail.setBackToMailId(mailDO.getBackToMailId());
+
         Iterable<MailReceiverDO> mailReceiverDOS = mailReceiverRepository.findAllByMailId(id);
         Iterable<MailGroupReceiverDO> mailGroupReceiverDOS = mailGroupReceiverRepository.findAllByMailId(id);
         for (MailReceiverDO mailReceiverDO : mailReceiverDOS) {
             mail.getReceiverIds().add(mailReceiverDO.getUserId());
-            //写错了之前
         }
         for (MailGroupReceiverDO mailGroupReceiverDO : mailGroupReceiverDOS) {
             mail.getGroupIds().add(mailGroupReceiverDO.getGroupId());
-            //get the "id"
+            mail.getGroupPaths().add(mailGroupReceiverDO.getPath());
         }
         return mail;
     }
