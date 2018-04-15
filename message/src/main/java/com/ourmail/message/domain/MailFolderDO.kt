@@ -5,11 +5,11 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
 @Entity
-class MailGroupReceiverDO {
+class MailFolderDO {
     @Id
     @GeneratedValue
     var id:Long? = null
+    var folderId = 0L
     var mailId = 0L
-    var groupId = 0L
-    //receiver 也这样做？
+    // 这个数据结构的含义是：有一个邮件的目录包含folderid（单独）
 }

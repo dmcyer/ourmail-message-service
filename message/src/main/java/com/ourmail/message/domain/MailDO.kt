@@ -13,5 +13,6 @@ class MailDO {
     var createtime = 0L
     var title = ""
     var content = ""
-    var backToMailId = 0L
+
+    var replyToId = 0L
 }
